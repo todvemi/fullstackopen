@@ -1,19 +1,10 @@
 import { useState } from 'react'
 
-const RandomNumber = (props) => {
-  const min = Math.ceil(props.min)
-  const max = Math.floor(props.max)
-  return (
-    Math.floor(Math.random() * (max - min + 1)) + min
-  )
-}
-
 const Button = (props) => {
   return(
-    <button onClick={setSelected}>{props.text}</button>
+    <button onClick={props.command}>{props.text}</button>
   )
 }
-
 
 const App = () => {
   const anecdotes = [
@@ -29,13 +20,20 @@ const App = () => {
 
   const [selected, setSelected] = useState(0)
 
+  const randomNumber = () => {
+    const min = 0;
+    const max = 7;
+    const random = Math.floor(Math.random() * (max - min + 1)) + min;
+    // console.log(random)
+    setSelected(random)
+  }
 
   return (
-    <div>
-      {anecdotes[selected]}
-      <Button text="next anecdote" />
+    <div>{anecdotes[selected]} <br />
+      <Button command={randomNumber} text="next anecdote" />
     </div>
   )
 }
+
 
 export default App
