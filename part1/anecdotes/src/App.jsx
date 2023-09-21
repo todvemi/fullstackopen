@@ -6,6 +6,18 @@ const Button = (props) => {
   )
 }
 
+const VoteAmount = (props) => {
+  return(
+    <p>has <b>{props.amount}</b> votes</p>
+  )
+}
+
+const Header = (props) => {
+  return(
+    <h1>{props.text}</h1>
+  )
+}
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -21,16 +33,45 @@ const App = () => {
   const [selected, setSelected] = useState(0)
 
   const randomNumber = () => {
-    const min = 0;
-    const max = 7;
-    const random = Math.floor(Math.random() * (max - min + 1)) + min;
+    const random = Math.floor(Math.random() * (anecdotes.length - 1))
     // console.log(random)
     setSelected(random)
   }
 
+  // storing voted points
+  const [points, vote] = useState(new Uint8Array(8))
+
+  const newVote = () => {
+    const newPoints = [...points]
+    newPoints[selected] += 1
+    vote(newPoints)
+  }
+
+  const findMostVotes = () => {
+    let maxIndex = 0
+    let maxVotes = points[0]
+    for (let i = 1; i < points.length; i++) {
+      if (points[i] > maxVotes) {
+        maxIndex = i
+        maxVotes = points[i]
+        // console.log(maxIndex)
+      }
+    }
+    return maxIndex
+  }
+
+  const mostVotesIndex = findMostVotes()
+
   return (
-    <div>{anecdotes[selected]} <br />
+    <div>
+      <Header text="anecdote of the day" />
+      {anecdotes[selected]} <br />
+      <VoteAmount amount={points[selected]} />
+    <br />
       <Button command={randomNumber} text="next anecdote" />
+      <Button command={newVote}text="vote" />
+      <Header text="anecdote with the most votes" />
+      <p>{anecdotes[mostVotesIndex]}</p>
     </div>
   )
 }
