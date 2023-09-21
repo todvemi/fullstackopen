@@ -34,17 +34,15 @@ const App = () => {
 
   const randomNumber = () => {
     const random = Math.floor(Math.random() * (anecdotes.length - 1))
-    // console.log(random)
     setSelected(random)
   }
 
-  // storing voted points
-  const [points, vote] = useState(new Uint8Array(8))
+  const [points, setPoints] = useState(new Uint8Array(8))
 
   const newVote = () => {
     const newPoints = [...points]
     newPoints[selected] += 1
-    vote(newPoints)
+    setPoints(newPoints)
   }
 
   const findMostVotes = () => {
@@ -54,7 +52,6 @@ const App = () => {
       if (points[i] > maxVotes) {
         maxIndex = i
         maxVotes = points[i]
-        // console.log(maxIndex)
       }
     }
     return maxIndex
@@ -71,10 +68,10 @@ const App = () => {
       <Button command={randomNumber} text="next anecdote" />
       <Button command={newVote}text="vote" />
       <Header text="anecdote with the most votes" />
+      <VoteAmount amount={points[mostVotesIndex]} />
       <p>{anecdotes[mostVotesIndex]}</p>
     </div>
   )
 }
-
 
 export default App
