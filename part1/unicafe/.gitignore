@@ -29,4 +29,3 @@ README.md
 public/
 vite.config.json
 .eslintrc.cjs
-index.html
