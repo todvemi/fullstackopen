@@ -1,8 +1,14 @@
-const Course = ({ course }) => {
+const Course = ({ courses }) => {
     
-    const Header = (props) => {
+    const Header1 = (props) => {
         return(
             <h1>{props.name}</h1>
+        )
+    }
+
+    const Header2 = (props) => {
+        return(
+            <h2>{props.name}</h2>
         )
     }
 
@@ -22,20 +28,31 @@ const Course = ({ course }) => {
         const exercises = content.map((part) => part.exercises)
         const totalExercises = exercises.reduce((total, exerciseAmount) => total + exerciseAmount, 0)
         return(
-            <p><b>total of {totalExercises}</b></p>
+            <p><b>total of {totalExercises} exercises</b></p>
         )
     }
 
+    const RenderCourses = (props) => {
+       return(
+            <div>
+                {courses.map((course, i) => (
+                    <div key={i}>
+                        <Header2 name={course.name} />
+                        <Content content={course.parts} />
+                        <Total content={course.parts} />
+                    </div>
+                ))}
+            </div>
+       )
+    }
 
     return(
     <div>
-        <Header name={course.name} />
-        <Content content={course.parts} />
-        <Total content={course.parts} />
+        <Header1 name="Web development curriculum" /> 
+        <RenderCourses courses={courses} />
     </div>
     )
 }
 
-  
-  
+
 export default Course
