@@ -4,7 +4,7 @@ const RenderAllPersons = (props) => {
       <div>
         {persons.map((persons, i) =>
         <p key={i}>
-          {persons.name} {persons.phonenumber}
+          {persons.name} {persons.number}
         </p>
         )}
       </div>

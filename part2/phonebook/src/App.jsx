@@ -1,26 +1,34 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import RenderAllPersons from './components/RenderAllPersons'
 import RenderFoundPersons from './components/RenderFoundPersons'
 import FilterNames from './components/FilterNames'
 import AddPersonForm from './components/AddPersonForm'
+import axios from 'axios'
+
+
+// 'http://localhost:3001/persons'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', phonenumber: '040-123456' },
-    { name: 'Ada Lovelace', phonenumber: '39-44-5323523' },
-    { name: 'Dan Abramov', phonenumber: '12-43-234345' },
-    { name: 'Mary Poppendieck', phonenumber: '39-23-6423122' }
-  ])
-
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [findPerson, setFindPerson] = useState('')
+
+  useEffect(() => {
+    // console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        // console.log('promise fulfilled')
+        setPersons(response.data)
+      })
+  }, [])
 
   const addPerson = (event) => {
     event.preventDefault()
     const personObject = {
       name: newName,
-      phonenumber: newNumber
+      number: newNumber
     }
     const onlyNames = persons.map((person) => person.name)
     onlyNames.includes(newName)

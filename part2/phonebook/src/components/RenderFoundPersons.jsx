@@ -10,7 +10,7 @@ const RenderFoundPersons = (props) => {
       <div>
         {personsToRender.map((persons, i) =>
         <p key={i}>
-          {persons.name} {persons.phonenumber}
+          {persons.name} {persons.number}
         </p>
         )}
       </div>
