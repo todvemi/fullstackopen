@@ -1,36 +1,8 @@
 import { useState } from 'react'
-
-const RenderAllPersons = (props) => {
-  const persons = props.content
-  return(
-    <div>
-      {persons.map((persons, i) =>
-      <p key={i}>
-        {persons.name} {persons.phonenumber}
-      </p>
-      )}
-    </div>
-  )
-}
-
-const RenderFoundPersons = (props) => {
-  const searchTerm = props.searchTerm.toLowerCase()
-  const personObjects = props.content
-  const personsToRender = []
-  const personNames = props.content.map((person) => person.name.toLowerCase())
-  const finder = personNames.map((personName, index) => personName.includes(searchTerm) 
-  ? personsToRender.push(personObjects[index])
-  : null)
-  return(
-    <div>
-      {personsToRender.map((persons, i) =>
-      <p key={i}>
-        {persons.name} {persons.phonenumber}
-      </p>
-      )}
-    </div>
-  )
-}
+import RenderAllPersons from './components/RenderAllPersons'
+import RenderFoundPersons from './components/RenderFoundPersons'
+import FilterNames from './components/FilterNames'
+import AddPersonForm from './components/AddPersonForm'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -61,11 +33,9 @@ const App = () => {
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
-
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
   }
-
   const handleFindChange = (event) => {
     setFindPerson(event.target.value)
   }
@@ -73,27 +43,14 @@ const App = () => {
   return (
     <div>
       <h1>PHONEBOOK</h1>
-      <div>
-        filter shown with:
-        <input value={findPerson}
-        onChange={handleFindChange} />
-      </div>
+      <FilterNames value={findPerson} onChange={handleFindChange} />
       <h2>add a new</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: 
-          <input value={newName}
-          onChange={handleNameChange} />
-        </div>
-        <div>
-          number: 
-          <input value={newNumber}
-          onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <AddPersonForm
+        formSubmit={addPerson}
+        nameValue={newName}
+        nameChange={handleNameChange}
+        numberValue={newNumber}
+        numberChange={handleNumberChange} />
       <h2>numbers</h2>
       {findPerson == '' 
       ? <RenderAllPersons content={persons} />
