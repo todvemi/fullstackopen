@@ -5,6 +5,7 @@ import FilterNames from './components/FilterNames'
 import AddPersonForm from './components/AddPersonForm'
 import personService from './services/persons'
 
+
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
@@ -14,10 +15,10 @@ const App = () => {
   useEffect(() => {
     personService
       .getAll()
-      .then(response => {
-        setPersons(response.data)
-    })
-  }, [])
+        .then(initialPersons => {
+        setPersons(initialPersons)
+      })
+    }, [])
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -30,11 +31,23 @@ const App = () => {
     ? alert(`${newName} is already added to phonebook`) 
     : personService
         .create(personObject)
-        .then(response => {
-          setPersons(persons.concat(response.data))
+        .then(returnedPersons => {
+          setPersons(persons.concat(returnedPersons))
           setNewName('')
           setNewNumber('')
         })
+  }
+
+  const removePerson = (id) => {
+    const person = persons.find(person => person.id === id)
+   if (window.confirm(`do you really want to remove ${person.name} from the phonebook?`)) {
+      personService
+        .remove(id)
+        .then((returnedPersons) => {
+          const updatedPersons = persons.filter(person => person.id !== id)
+          setPersons(updatedPersons)
+          findPerson !== '' ? setFindPerson('') : null
+      })}
   }
 
   const handleNameChange = (event) => {
@@ -60,8 +73,8 @@ const App = () => {
         numberChange={handleNumberChange} />
       <h2>numbers</h2>
       {findPerson == '' 
-      ? <RenderAllPersons content={persons} />
-      : <RenderFoundPersons content={persons} searchTerm={findPerson} />
+      ? <RenderAllPersons content={persons} removePerson={removePerson} />
+      : <RenderFoundPersons content={persons} searchTerm={findPerson} removePerson={removePerson} />
         }
     </div>
   )

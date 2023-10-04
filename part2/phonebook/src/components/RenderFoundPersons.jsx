@@ -1,4 +1,9 @@
 const RenderFoundPersons = (props) => {
+    
+  const handleRemovePerson = (id) => {
+    props.removePerson(id)
+  }
+  
     const searchTerm = props.searchTerm.toLowerCase()
     const personObjects = props.content
     const personsToRender = []
@@ -8,10 +13,13 @@ const RenderFoundPersons = (props) => {
     : null)
     return(
       <div>
-        {personsToRender.map((persons, i) =>
-        <p key={i}>
-          {persons.name} {persons.number}
+        {personsToRender.map((person) =>
+        <div key={person.id} style={{ display: 'flex', alignItems: 'center' }}>
+        <p>
+          {person.name} {person.number}
         </p>
+        <button onClick={() => handleRemovePerson(person.id)}>x</button>
+        </div>
         )}
       </div>
     )
