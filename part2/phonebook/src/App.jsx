@@ -27,16 +27,29 @@ const App = () => {
       number: newNumber
     }
     const onlyNames = persons.map((person) => person.name)
-    onlyNames.includes(newName)
-    ? alert(`${newName} is already added to phonebook`) 
-    : personService
-        .create(personObject)
-        .then(returnedPersons => {
-          setPersons(persons.concat(returnedPersons))
-          setNewName('')
-          setNewNumber('')
-        })
-  }
+    if (onlyNames.includes(newName)) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const id = persons.find((person) => person.name === newName).id
+        personService
+            .update(id, personObject)
+            .then((returnedPersons) => {
+              setPersons(persons.map(person => person.id !== id ? person : returnedPersons))
+              setNewName('')
+              setNewNumber('')
+            })  
+      } else {
+        setNewName('')
+        setNewNumber('')
+      }
+  } else {
+      personService
+          .create(personObject)
+          .then(returnedPersons => {
+              setPersons(persons.concat(returnedPersons));
+              setNewName('');
+              setNewNumber('');
+          });
+  }}
 
   const removePerson = (id) => {
     const person = persons.find(person => person.id === id)
