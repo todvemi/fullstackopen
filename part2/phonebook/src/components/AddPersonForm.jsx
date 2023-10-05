@@ -1,17 +1,17 @@
 const AddPersonForm = (props) => {
     return(
     <form onSubmit={props.formSubmit}>
-          <div>
+          <div className="form">
             name: 
             <input value={props.nameValue}
             onChange={props.nameChange} />
           </div>
-          <div>
+          <div className="form">
             number: 
             <input value={props.numberValue }
             onChange={props.numberChange} />
           </div>
-          <div>
+          <div className="form">
             <button type="submit">add</button>
           </div>
         </form>

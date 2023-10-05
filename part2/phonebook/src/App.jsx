@@ -3,13 +3,14 @@ import Persons from './components/Persons'
 import FilterNames from './components/FilterNames'
 import AddPersonForm from './components/AddPersonForm'
 import personService from './services/persons'
-
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [findPerson, setFindPerson] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -35,6 +36,20 @@ const App = () => {
               setPersons(persons.map(person => person.id !== id ? person : returnedPersons))
               setNewName('')
               setNewNumber('')
+              setMessage(
+                `Updated ${personObject.name}'s number`
+              )
+              setTimeout(() => {
+                setMessage(null)
+              }, 3500)
+            })
+            .catch(error => {
+              setMessage(
+                `Failed to update ${personObject.name}'s number`
+              )
+              setTimeout(() => {
+                setMessage(null)
+              }, 3500)
             })  
       } else {
         setNewName('')
@@ -47,19 +62,48 @@ const App = () => {
               setPersons(persons.concat(returnedPersons));
               setNewName('');
               setNewNumber('');
-          });
+              setMessage(
+                `Added ${personObject.name} to phonebook`
+              )
+              setTimeout(() => {
+                setMessage(null)
+              }, 3500)
+          })
+          .catch(error => {
+            setMessage(
+              `Failed to add ${personObject.name} to phonebook`
+            )
+            setTimeout(() => {
+              setMessage(null)
+            }, 3500)
+          })  
   }}
 
   const removePerson = (id) => {
     const person = persons.find(person => person.id === id)
-   if (window.confirm(`do you really want to remove ${person.name} from the phonebook?`)) {
+   if (window.confirm(`do you really want to delete ${person.name} from the phonebook?`)) {
       personService
         .remove(id)
         .then((returnedPersons) => {
           const updatedPersons = persons.filter(person => person.id !== id)
           setPersons(updatedPersons)
           findPerson !== '' ? setFindPerson('') : null
-      })}
+          setMessage(
+            `Deleted ${person.name} from phonebook`
+          )
+          setTimeout(() => {
+            setMessage(null)
+          }, 3500)
+      })
+        .catch(error => {
+          setMessage(
+            `Failed to delete ${person.name} from the phonebook`
+          )
+          setTimeout(() => {
+            setMessage(null)
+          }, 3500)
+        }) 
+    } 
   }
 
   const handleNameChange = (event) => {
@@ -73,8 +117,9 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className='app'>
       <h1>PHONEBOOK</h1>
+      <Notification message={message} />
       <FilterNames value={findPerson} onChange={handleFindChange} />
       <h2>add a new</h2>
       <AddPersonForm
@@ -87,7 +132,6 @@ const App = () => {
       <Persons content={persons} searchTerm={findPerson} removePerson={removePerson} />
     </div>
   )
-
 }
 
 export default App

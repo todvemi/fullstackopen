@@ -1,6 +1,6 @@
 const FilterNames = (props) => {
     return(
-      <div>
+      <div className="filter">
       filter shown with:
       <input value={props.value}
       onChange={props.onChange} />

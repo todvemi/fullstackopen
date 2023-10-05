@@ -6,12 +6,13 @@ const RenderPersons = (props) => {
     
     const persons = props.content
     return(
-      <div>
+      <div className="persons">
         {persons.map((person) =>
         <div key={person.id} style={{ display: 'flex', alignItems: 'center' }}>
         <p>
-          {person.name} {person.number}
+          {person.name}
         </p>
+        <p className="number">{person.number}</p>
         <button onClick={() => handleRemovePerson(person.id)}>x</button>
         </div>
         )}
