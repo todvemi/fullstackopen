@@ -1,9 +1,9 @@
-const RenderAllPersons = (props) => {
+const RenderPersons = (props) => {
 
     const handleRemovePerson = (id) => {
       props.removePerson(id)
     }
-
+    
     const persons = props.content
     return(
       <div>
@@ -20,4 +20,4 @@ const RenderAllPersons = (props) => {
   }
 
 
-export default RenderAllPersons
+export default RenderPersons

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
-import RenderAllPersons from './components/RenderAllPersons'
-import RenderFoundPersons from './components/RenderFoundPersons'
+import Persons from './components/Persons'
 import FilterNames from './components/FilterNames'
 import AddPersonForm from './components/AddPersonForm'
 import personService from './services/persons'
@@ -85,10 +84,7 @@ const App = () => {
         numberValue={newNumber}
         numberChange={handleNumberChange} />
       <h2>numbers</h2>
-      {findPerson == '' 
-      ? <RenderAllPersons content={persons} removePerson={removePerson} />
-      : <RenderFoundPersons content={persons} searchTerm={findPerson} removePerson={removePerson} />
-        }
+      <Persons content={persons} searchTerm={findPerson} removePerson={removePerson} />
     </div>
   )
 
