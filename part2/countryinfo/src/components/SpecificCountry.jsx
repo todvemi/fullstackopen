@@ -1,35 +1,8 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
+import RenderCountryInfo from "./RenderCountryInfo"
 
 const baseUrl = 'https://studies.cs.helsinki.fi/restcountries/api/name/'
-
-const RenderCountryInfo = ({ countryInfo }) => {
-    const img = {
-        width: '175px',
-        height: '100%',
-    }
-
-    const languagesObject = countryInfo.languages
-    console.log(languagesObject)
-    const languagesArray = Object.values(languagesObject)
-    return(
-        <div>
-            <h1>{countryInfo.name.common}</h1>
-            <div>capital {countryInfo.capital}</div>
-            <div>area {countryInfo.area}</div>
-            <h3>languages:</h3>
-            <ul>
-            {languagesArray.map((language, i) =>
-            <li key={i}>
-                {language}
-            </li>)}
-            </ul>
-            <div>
-                <img src={countryInfo.flags.svg} alt={countryInfo.flags.alt} style={img}/>
-            </div>
-        </div>
-    )
-}
 
 const SpecificCountry = ({ country }) => {
     const [countryInfo, setCountryInfo] = useState([])
@@ -40,6 +13,8 @@ const SpecificCountry = ({ country }) => {
             .then(response => {
               setCountryInfo(response.data)
             })
+            .catch(error =>
+                console.log('error while getting the country data:', error))
       }, [country])
 
       if (!countryInfo) {

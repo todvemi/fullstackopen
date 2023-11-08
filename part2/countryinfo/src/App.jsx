@@ -2,17 +2,13 @@ import { useState, useEffect } from "react"
 import SearchField from "./components/SearchField"
 import countryService from "./services/countries"
 import Countries from "./components/Countries"
-import SpecificCountry from "./components/SpecificCountry"
-
 
 const App = () => {
   const [countries, setCountries] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedCountry, setSelectedCountry] = useState(null)
 
   const handleSearchTermChange = (event) => {
     setSearchTerm(event.target.value)
-    setSelectedCountry(null)
   }
 
   useEffect(() => {
@@ -21,25 +17,16 @@ const App = () => {
       .then(countries => {
         setCountries(countries)
       })
+      .catch(error =>
+        console.log('error while fetching data from api:', error))
   }, [])
 
   return(
-     <div>
+     <div> 
        <SearchField searchTerm={searchTerm} handleChange={handleSearchTermChange}/>
-       {selectedCountry ? (
-        <SpecificCountry country={selectedCountry} />
-      ) : (
-        <Countries
-          searchTerm={searchTerm}
-          countries={countries}
-          onCountryClick={(countryName) => setSelectedCountry(countryName)}
-        />
-      )}
+       <Countries searchTerm={searchTerm} countries={countries} />
      </div>
   )
 }
 
 export default App
-
-
-// selectedCountry tila pitää varmaan siirtää Countries komponenttiin. Appin tilaa ei voida päivittää eri komponentista, joten tämä täytyy ratkoa jotenkin
