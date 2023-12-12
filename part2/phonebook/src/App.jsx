@@ -26,8 +26,8 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    const onlyNames = persons.map((person) => person.name)
-    if (onlyNames.includes(newName)) {
+    const onlyNames = persons.map((person) => person.name.toLowerCase())
+    if (onlyNames.includes(newName.toLowerCase())) {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         const id = persons.find((person) => person.name === newName).id
         personService
@@ -44,6 +44,7 @@ const App = () => {
               }, 3500)
             })
             .catch(error => {
+              console.log(error)
               setMessage(
                 `Failed to update ${personObject.name}'s number`
               )
@@ -70,6 +71,7 @@ const App = () => {
               }, 3500)
           })
           .catch(error => {
+            console.log(error.response.data)
             setMessage(
               `Failed to add ${personObject.name} to phonebook`
             )
